@@ -7,7 +7,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-20-04
-    #latest는 절대 받으면 안됨(latestt는 항상 버전이 바뀌니까)
 
     steps:
       - name: 1. CheckOut Source
