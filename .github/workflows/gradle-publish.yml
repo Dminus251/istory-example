@@ -50,3 +50,7 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
           logout: true
+
+      - name: 7. Docker push
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/istory
+        #마찬가지로 원래 latest쓰면 안됨 실무에선 secrets처럼 github에서 어케 변수써서 버전 지정함
