@@ -4,9 +4,11 @@ on:
     branches: ["main"]
   pull_request:
     branches: ["main"]
+permissions: write-all
+#  contents: write-all
 jobs:
   build:
-    runs-on: ubuntu-20-04
+    runs-on: ubuntu-20.04
 
     steps:
       - name: 1. CheckOut Source
@@ -19,7 +21,7 @@ jobs:
           distribution: 'temurin'
 
       - name: 3. Change Execute Mode
-        run: chmod +x gradlew
+        run: chmod 755 gradlew
 
       - name: 4. Install Mysql
         uses: mirromutth/mysql-action@v1.1
@@ -30,9 +32,19 @@ jobs:
           mysql database: 'istory'
           mysql root password: ${{ secrets.MYSQL_ROOT_PASSWORD }}
           mysql user: ${{ secrets.MYSQL_USER }}
-          mysql password: 'admin123' ${{ secrets.MYSQL_USER_PASSWORD }}
+          mysql password: ${{ secrets.MYSQL_USER_PASSWORD }}
 
-      - name: 5. Build with Gradle
+      - name: 4. Build with Gradle
         uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
         with:
           arguments: build
+          cache-disabled: true
+          gradle-home-cache-cleanup: true
+#
+#    - name: Publish to GitHub Packages
+#      uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
+#      with:
+#        arguments: publish
+#      env:
+#        USERNAME: ${{ github.actor }}
+#        TOKEN: ${{ secrets.GITHUB_TOKEN }}
